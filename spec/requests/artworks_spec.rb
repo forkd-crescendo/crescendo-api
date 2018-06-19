@@ -56,7 +56,7 @@ RSpec.describe 'Crescendo API', type: :request do
   describe 'POST /artworks' do
     # valid payload
     let(:valid_attributes) do
-      { title: 'Learn Elm', created_by:user.id.to_s, created_on: DateTime.now }.to_json
+      { title: 'Learn Elm', created_by:user.id.to_s}.to_json
     end
 
     context 'when the request is valid' do
@@ -81,7 +81,7 @@ RSpec.describe 'Crescendo API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Created on can't be blank/)
+          .to match(/Validation failed: Title can't be blank/)
       end
     end
   end

@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_13_143550) do
+ActiveRecord::Schema.define(version: 2018_06_19_174555) do
 
   create_table "artworks", force: :cascade do |t|
     t.string "title"
-    t.datetime "created_on"
     t.text "description"
     t.string "imagen"
     t.string "url"
@@ -25,7 +24,6 @@ ActiveRecord::Schema.define(version: 2018_06_13_143550) do
 
   create_table "favourites", force: :cascade do |t|
     t.integer "artwork_id"
-    t.datetime "created_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["artwork_id"], name: "index_favourites_on_artwork_id"
