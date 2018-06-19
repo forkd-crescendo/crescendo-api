@@ -35,7 +35,10 @@ class ArtworksController < ApplicationController
 
   def artwork_params
     # whitelist params
-    params.permit(:title, :created_on)
+    # params[:created_on] = DateTime.now
+    params.permit(:title, :created_by, :created_on)
+    puts params
+
   end
 
   def set_artwork

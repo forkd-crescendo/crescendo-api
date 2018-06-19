@@ -3,13 +3,15 @@ require 'rails_helper'
 
 RSpec.describe 'Crescendo API', type: :request do
   # initialize test data
-  let!(:artworks) { create_list(:artwork, 10) }
+  let(:user) { create(:user) }
+  let!(:artworks) { create_list(:artwork, 10, created_by: user.id) }
   let(:artwork_id) { artworks.first.id }
+  let(:headers) { valid_headers }
 
   # Test suite for GET /artworks
   describe 'GET /artworks' do
     # make HTTP get request before each example
-    before { get '/artworks' }
+    before { get '/artworks', params: {}, headers: headers }
 
     it 'returns artworks' do
       # Note `json` is a custom helper to parse JSON responses
@@ -24,7 +26,7 @@ RSpec.describe 'Crescendo API', type: :request do
 
   # Test suite for GET /artworks/:id
   describe 'GET /artworks/:id' do
-    before { get "/artworks/#{artwork_id}" }
+    before { get "/artworks/#{artwork_id}", params: {}, headers: headers }
 
     context 'when the record exists' do
       it 'returns the artwork' do
@@ -53,10 +55,12 @@ RSpec.describe 'Crescendo API', type: :request do
   # Test suite for POST /artworks
   describe 'POST /artworks' do
     # valid payload
-    let(:valid_attributes) { { title: 'Learn Elm', created_on: DateTime.now } }
+    let(:valid_attributes) do
+      { title: 'Learn Elm', created_by:user.id.to_s, created_on: DateTime.now }.to_json
+    end
 
     context 'when the request is valid' do
-      before { post '/artworks', params: valid_attributes }
+      before { post '/artworks', params: valid_attributes, headers: headers }
 
       it 'creates a artwork' do
         expect(json['title']).to eq('Learn Elm')
@@ -68,7 +72,8 @@ RSpec.describe 'Crescendo API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/artworks', params: { title: 'Foobar' } }
+      let(:invalid_attributes) { { title: nil }.to_json }
+      before { post '/artworks', params: invalid_attributes, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -83,10 +88,10 @@ RSpec.describe 'Crescendo API', type: :request do
 
   # Test suite for PUT /artworks/:id
   describe 'PUT /artworks/:id' do
-    let(:valid_attributes) { { title: 'Shopping' } }
+    let(:valid_attributes) { { title: 'Shopping' }.to_json }
 
     context 'when the record exists' do
-      before { put "/artworks/#{artwork_id}", params: valid_attributes }
+      before { put "/artworks/#{artwork_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -100,7 +105,7 @@ RSpec.describe 'Crescendo API', type: :request do
 
   # Test suite for DELETE /artworks/:id
   describe 'DELETE /artworks/:id' do
-    before { delete "/artworks/#{artwork_id}" }
+    before { delete "/artworks/#{artwork_id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
