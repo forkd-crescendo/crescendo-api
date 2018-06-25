@@ -6,7 +6,7 @@ class  MeController < ApplicationController
 
   # GET /me
   def index
-    @user = curent_user
+    @user = current_user
     json_response(@user)
   end
 
