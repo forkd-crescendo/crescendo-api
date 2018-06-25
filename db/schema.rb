@@ -10,16 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_19_174555) do
+ActiveRecord::Schema.define(version: 2018_06_24_204436) do
 
   create_table "artworks", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.string "imagen"
-    t.string "url"
+    t.string "thumbnail"
+    t.string "videoId"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "created_by"
+    t.string "artist"
+  end
+
+  create_table "favourite_users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "favourite_id"
   end
 
   create_table "favourites", force: :cascade do |t|
@@ -36,6 +44,9 @@ ActiveRecord::Schema.define(version: 2018_06_19_174555) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "bio"
+    t.string "photo"
+    t.string "genre"
+    t.string "role"
   end
 
 end

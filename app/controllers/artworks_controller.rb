@@ -2,6 +2,14 @@
 class ArtworksController < ApplicationController
   before_action :set_artwork, only: [:show, :update, :destroy]
 
+  swagger_controller :artworks, 'artworks'
+
+      swagger_api :index do
+        summary 'Returns all posts'
+        notes 'Notes...'
+      end
+
+
   # GET /artworks
   def index
     @artworks = Artwork.all
@@ -26,7 +34,7 @@ class ArtworksController < ApplicationController
   end
 
   # DELETE /artworks/:id
-  def destroy
+  def deleteArtwork
     @artwork.destroy
     head :no_content
   end

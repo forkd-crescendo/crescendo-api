@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   # Model associations
   has_many :artworks, foreign_key: :created_by
+  has_many :favourites, class_name: "FavouriteUser", foreign_key: "user_id"
   # Validations
   validates_presence_of :name, :email, :password_digest
 end
