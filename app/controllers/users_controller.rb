@@ -1957,7 +1957,11 @@ class UsersController < ApplicationController
       :name,
       :email,
       :password,
-      :password_confirmation
+      :password_confirmation,
+      :photo,
+      :role,
+      :genre,
+      :bio
     )
   end
 
