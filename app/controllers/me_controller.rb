@@ -1,4 +1,4 @@
-class MeController < ApplicationController
+class  MeController < ApplicationController
   skip_before_action :authorize_request, only: [:generate]
   before_action :set_user, only: [:show, :update, :destroy]
   before_action :set_artwork, only: [:updateArtwork, :destroyArtwork]
@@ -55,8 +55,9 @@ class MeController < ApplicationController
   # GET /me/favourites/artworks
   def favouritesArtworks
     @favourites = current_user.favourites
-    @artworks = []
-    @favourites.each { |x| @artworks.append(User.find(x.favourite_id).artworks)}
+    @artworks_ = []
+    @favourites.each { |x| @artworks_.append(User.find(x.favourite_id).artworks)}
+    @artworks = @artworks_.flatten(1)
     json_response(@artworks)
   end
 
@@ -70,7 +71,7 @@ class MeController < ApplicationController
   # DELETE /me/favourite/:id
   def destroyFavourite
     @favourite.destroy
-    head :no_content
+    json_response({sucess: true})
   end
   private
 
@@ -97,7 +98,7 @@ class MeController < ApplicationController
   end
 
   def set_favourite
-    @favourite = FavouriteUser.find(params[:id])
+    @favourite = FavouriteUser.find_by(favourite_id: params[:id])
   end
 
   def set_artwork
